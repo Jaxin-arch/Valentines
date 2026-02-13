@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For You 💖 | Rose Day Message</title>
+    <link rel="stylesheet" href="new.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      
+      <div class="postcard1" aria-hidden="true"></div>
+      
+      <div class="postcard" role="article" aria-label="Love letter">
+        <div class="letter" aria-hidden="true"></div>
+        
+        <div class="message-content">
+          <p>
+            <span class="greeting">My BlomingerangLadious Victoria,</span>
+            <br />
+            With a heart full of admiration and affection, I want to express my full gratitude for meeting you in my life (huhu HAHAHAHA). I once thought that maybe all of those experiences were never meant for me and that they could never happen in my life. But perhaps, you proved me wrong.
+            <br />
+            <br />
+            I still can’t completely comprehend why I was gifted with such a blessing and rare opportunity to be wanted and trusted by such a fine woman (very very fine), and my heart overflows with gratitude for being given someone as wonderful as you. I hope and pray that you will never get tired of my “nonsense” stuff and of my whole existence. I root for your safety, happiness, and love.
+            <br />
+            <br />
+            Happy Valentines Day!!🫶🫶
+            <br />
+            <br />
+            <span class="signature">
+              <span class="ullu">
+                Forever Yours,
+                <br />
+                John Cernan
+              </span>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+<script>
+  // 2-Second Press to Disappear Feature
+  let pressTimer;
+  let isPressing = false;
+  let startTime;
+  let progressInterval;
+  
+  const postcard = document.querySelector('.postcard');
+  const postcard1 = document.querySelector('.postcard1');
+  
+  // Create progress bar
+  const progressBar = document.createElement('div');
+  progressBar.className = 'press-progress';
+  progressBar.style.width = '0%';
+  postcard.parentNode.style.position = 'relative';
+  postcard.parentNode.appendChild(progressBar);
+  
+  // Mouse events
+  postcard.addEventListener('mousedown', startPress);
+  postcard.addEventListener('mouseup', cancelPress);
+  postcard.addEventListener('mouseleave', cancelPress);
+  
+  // Touch events for mobile
+  postcard.addEventListener('touchstart', startPress);
+  postcard.addEventListener('touchend', cancelPress);
+  postcard.addEventListener('touchcancel', cancelPress);
+  
+  // Prevent click from doing anything
+  postcard.addEventListener('click', (e) => {
+    e.preventDefault();
+    return false;
+  });
+  
+  function startPress(e) {
+    e.preventDefault();
+    
+    // Don't start a new timer if already pressing or if disappeared
+    if (isPressing || postcard.classList.contains('disappear')) return;
+    
+    isPressing = true;
+    startTime = Date.now();
+    
+    // Clear any existing timer
+    clearTimeout(pressTimer);
+    clearInterval(progressInterval);
+    
+    // Remove return class if it exists
+    postcard.classList.remove('return');
+    postcard1.classList.remove('return');
+    
+    // Start progress bar animation
+    progressBar.style.width = '0%';
+    progressInterval = setInterval(updateProgress, 50);
+    
+    // Start 2-second timer
+    pressTimer = setTimeout(() => {
+      // Make both cards disappear
+      postcard.classList.add('disappear');
+      postcard1.classList.add('disappear');
+      postcard.classList.remove('return');
+      postcard1.classList.remove('return');
+      isPressing = false;
+      
+      // Reset progress bar
+      progressBar.style.width = '0%';
+      clearInterval(progressInterval);
+    }, 2000);
+  }
+  
+  function updateProgress() {
+    if (!isPressing) return;
+    
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min((elapsed / 2000) * 100, 100);
+    progressBar.style.width = progress + '%';
+    
+    if (progress >= 100) {
+      clearInterval(progressInterval);
+    }
+  }
+  
+  function cancelPress(e) {
+    e.preventDefault();
+    
+    // Clear the timer and progress interval
+    clearTimeout(pressTimer);
+    clearInterval(progressInterval);
+    
+    // Only return to normal if it hasn't disappeared and was pressing
+    if (isPressing && !postcard.classList.contains('disappear')) {
+      postcard.classList.add('return');
+      postcard1.classList.add('return');
+      
+      // Remove return class after animation completes
+      setTimeout(() => {
+        postcard.classList.remove('return');
+        postcard1.classList.remove('return');
+      }, 500);
+    }
+    
+    // Reset progress bar
+    progressBar.style.width = '0%';
+    isPressing = false;
+  }
+  
+  // Reset after disappearance (so it can be pressed again)
+  postcard.addEventListener('animationend', (e) => {
+    if (e.animationName === 'disappearCard') {
+      setTimeout(() => {
+        postcard.classList.remove('disappear');
+        postcard1.classList.remove('disappear');
+        postcard.classList.add('return');
+        postcard1.classList.add('return');
+        
+        setTimeout(() => {
+          postcard.classList.remove('return');
+          postcard1.classList.remove('return');
+        }, 500);
+      }, 2000); // Stay disappeared for 2 seconds
+    }
+  });
+  
+  // Prevent default touch behaviors
+  postcard.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+</script>
+  </body>
+</html>
